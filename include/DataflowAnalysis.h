@@ -171,6 +171,11 @@ public:
       });
   }
 
+  template<typename State>
+  void meetFunctionEnter(llvm::CallSite cs, State& state) {};
+  template<typename State>
+  void meetFunctionLeave(llvm::CallSite cs, State& state) {};
+
   AbstractValue
   meetPair(AbstractValue& v1, AbstractValue& v2) const {
     llvm_unreachable("unimplemented meet");
@@ -433,6 +438,14 @@ public:
     return called && !called->isDeclaration();
   }
 
+  void meetFunctionEnter(llvm::CallSite cs, State &state) {
+    meet.meetFunctionEnter(cs, state);
+  }
+
+  void meetFunctionLeave(llvm::CallSite cs, State &state) {
+    meet.meetFunctionLeave(cs, state);
+  }
+
   void
   analyzeCall(llvm::CallSite cs, State &state, const Context& context) {
     Context newContext;
@@ -452,9 +465,14 @@ public:
 
     needsUpdate |= Direction::prepareSummaryState(cs, callee, state, summaryState, transfer, meet);
 
+    summaryState[nullptr] = state[nullptr];
+    meetFunctionEnter(cs, summaryState);
+
     if (!active.count(toCall) && needsUpdate) {
       computeDataflow(*callee, newContext);
     }
+
+    meetFunctionLeave(cs, summaryState);
 
     state[cs.getInstruction()] = calledState[callee][callee];
     callers[toCall].insert(toUpdate);
