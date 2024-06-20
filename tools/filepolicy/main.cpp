@@ -87,7 +87,9 @@ public:
 
   void meetFunctionEnter(llvm::CallSite cs, FileState& state) {
      state[nullptr].insert(cs.getInstruction());
-     state[nullptr].insert(cs.getCalledFunction()->getEntryBlock().getFirstNonPHI());
+     auto FirstWithDebugLoc = llvm::find_if(cs.getCalledFunction()->getEntryBlock(), [](llvm::Instruction& Inst){ return Inst.getDebugLoc();  });
+     assert(FirstWithDebugLoc != cs.getCalledFunction()->getEntryBlock().end());
+     state[nullptr].insert(&*FirstWithDebugLoc);
   }
   void meetFunctionLeave(llvm::CallSite cs, FileState& state) {
      // state[nullptr].insert(cs.getInstruction());

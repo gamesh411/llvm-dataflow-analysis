@@ -1,0 +1,9 @@
+[0;31mAt c/07loopBuggy.c line 18:
+[0;33mIn call to "fprintf" argument (0) may not be an open file.
+[0;31mAt c/07loopBuggy.c line 10:
+[0;33mIn call to "fprintf" argument (0) may not be an open file.
+[0;31mAt c/07loopBuggy.c line 19:
+[0;33mIn call to "fclose" argument (0) may not be an open file.
+[0;31mAt c/07loopBuggy.c line 11:
+[0;33mIn call to "fclose" argument (0) may not be an open file.
+[0m

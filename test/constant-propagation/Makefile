@@ -11,7 +11,7 @@
 #
 
 #LLVM_BIN     := /usr/shared/CMPT/wsumner/llvm/bin/
-CHECKER      := ../../../dfbuild/bin/constant-propagation
+CHECKER      := ../../build/bin/constant-propagation
 CLANG        := $(LLVM_BIN)clang
 OPT          := $(LLVM_BIN)opt
 RM           := rm
